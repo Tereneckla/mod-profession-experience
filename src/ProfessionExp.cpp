@@ -95,6 +95,9 @@ RewardExperienceScript() : PlayerScript("RewardExperienceScript", {
 
     bool OnPlayerUpdateFishingSkill(Player* player, int32 skill, int32 zone_skill, int32 /*chance*/, int32 /*roll*/) override
     {
+        if (zone_skill < 1)
+            zone_skill = 1;
+
         if (float xpFactor = peConfigData.GetConfigValue<float>(PEConfig::FISHING_EXPERIENCE))
             RewardXP(player, skill, zone_skill + 100, zone_skill + 50, zone_skill + 25, zone_skill, xpFactor);
 
@@ -123,7 +126,7 @@ RewardExperienceScript() : PlayerScript("RewardExperienceScript", {
         }
 
         if (float xpFactor = peConfigData.GetConfigValue<float>(experienceSetting))
-            RewardXP(player, currentLevel, gray, green, yellow, yellow -25, xpFactor);
+            RewardXP(player, currentLevel, gray, green, yellow, yellow - 25, xpFactor);
     }
 
     void OnPlayerUpdateCraftingSkill(Player *player, SkillLineAbilityEntry const* skill, uint32 currentLevel, uint32& /*gain*/) override
@@ -191,7 +194,7 @@ RewardExperienceScript() : PlayerScript("RewardExperienceScript", {
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_YELLOW);
         else
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_ORANGE);
-
+        
         if (minSkill > 375)
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_GRANDMASTER);
         else if (minSkill > 300)
@@ -204,10 +207,10 @@ RewardExperienceScript() : PlayerScript("RewardExperienceScript", {
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_JOURNEYMAN);
         else
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_APPRENTICE);
-
+        
         if (float curve = peConfigData.GetConfigValue<float>(PEConfig::MULT_CURVE))
             xp = xp * pow(curve,(minSkill/450));
-
+        
         player->GiveXP(xp, nullptr);
     }
 };
