@@ -194,7 +194,7 @@ RewardExperienceScript() : PlayerScript("RewardExperienceScript", {
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_YELLOW);
         else
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_ORANGE);
-        
+
         if (minSkill > 375)
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_GRANDMASTER);
         else if (minSkill > 300)
@@ -207,10 +207,11 @@ RewardExperienceScript() : PlayerScript("RewardExperienceScript", {
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_JOURNEYMAN);
         else
             xp = xp * peConfigData.GetConfigValue<float>(PEConfig::MULT_APPRENTICE);
-        
+
         if (float curve = peConfigData.GetConfigValue<float>(PEConfig::MULT_CURVE))
             xp = xp * pow(curve,(minSkill/450));
-        
+
+        sScriptMgr->OnPlayerGiveXP(player, xp, nullptr, PlayerXPSource::XPSOURCE_EXPLORE);
         player->GiveXP(xp, nullptr);
     }
 };
