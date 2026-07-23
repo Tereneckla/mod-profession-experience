@@ -3,7 +3,6 @@
  */
 
 #include "Chat.h"
-#include "Config.h"
 #include "ConfigValueCache.h"
 #include "Player.h"
 #include "ScriptMgr.h"
@@ -211,7 +210,7 @@ RewardExperienceScript() : PlayerScript("RewardExperienceScript", {
         if (float curve = peConfigData.GetConfigValue<float>(PEConfig::MULT_CURVE))
             xp = xp * pow(curve,(minSkill/450));
 
-        sScriptMgr->OnPlayerGiveXP(player, xp, nullptr, PlayerXPSource::XPSOURCE_EXPLORE);
+        sScriptMgr->OnPlayerGiveXP(player, xp, nullptr, PlayerXPSource(42));
         player->GiveXP(xp, nullptr);
     }
 };
